@@ -4,12 +4,9 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
+    "site": "rgc-ballroom-booking-dev",
     "public": "dist",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
         "source": "**",
