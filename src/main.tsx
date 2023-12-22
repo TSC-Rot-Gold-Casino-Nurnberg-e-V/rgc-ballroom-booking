@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 import { Overview } from "./Overview.tsx";
 
-import { LocalizationProvider } from "@mui/x-date-pickers";
+import { LocalizationProvider, deDE } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/de";
 
@@ -28,7 +28,13 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <CssBaseline />
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
+    <LocalizationProvider
+      dateAdapter={AdapterDayjs}
+      adapterLocale="de"
+      localeText={
+        deDE.components.MuiLocalizationProvider.defaultProps.localeText
+      }
+    >
       <RouterProvider router={router} />
     </LocalizationProvider>
   </React.StrictMode>,
