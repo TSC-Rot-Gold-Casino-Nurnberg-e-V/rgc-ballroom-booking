@@ -20,7 +20,7 @@ export const BottomAppBar = ({
 
   return (
     <div
-      className="flex h-20 items-center justify-between bg-stone-50 py-3 pl-1 pr-4"
+      className="flex h-20 items-center justify-between bg-stone-50 px-4 py-3"
       style={{
         order: isMobile ? 1 : 0,
       }}
