@@ -49,12 +49,10 @@ export const BottomAppBar = ({
   );
 };
 
-const IconButton = ({ children, ...buttonProps }: ComponentProps<"button">) => {
-  return (
-    <button {...buttonProps} className="group h-12 w-12">
-      <div className="m-1 flex h-10 w-10 items-center justify-center rounded-full bg-stone-200 transition-colors group-hover:bg-stone-300 group-active:bg-stone-300">
-        {children}
-      </div>
-    </button>
-  );
-};
+const IconButton = ({ children, ...buttonProps }: ComponentProps<"button">) => (
+  <button {...buttonProps} className="group h-12 w-12 rounded-full">
+    <div className="m-1 flex h-10 w-10 items-center justify-center rounded-full bg-stone-200 transition-colors group-hover:bg-stone-300 group-active:bg-stone-300">
+      {children}
+    </div>
+  </button>
+);
