@@ -1,56 +1,42 @@
-import { Button, IconButton, useMediaQuery, useTheme } from "@mui/material";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-import { DatePicker } from "@mui/x-date-pickers";
 import { useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
+import { MobileDatePicker } from "@mui/x-date-pickers";
+import { BottomAppBar } from "./BottomAppBar.tsx";
 
 export const Overview = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const DISPLAYED_HOURS = 14;
   const SECTIONS_PER_HOUR = 4;
   const ROWS = DISPLAYED_HOURS * SECTIONS_PER_HOUR;
   const COLUMN_HEIGHT = 25;
 
-  const start = dayjs("08:00", "HH:mm");
+  const START_TIME = dayjs("08:00", "HH:mm");
 
   const [date, setDate] = useState<Dayjs | null>(dayjs());
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
 
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr]">
-      <div
-        className="mx-auto flex w-fit gap-2 p-4"
-        style={{ order: isMobile ? 1 : 0 }}
-      >
-        <DatePicker label="Datum" value={date} onChange={setDate} />
-        <div className="mx-auto flex items-center gap-1">
-          <IconButton
-            aria-label="vorheriger Tag"
-            className="h-fit"
-            onClick={() =>
-              setDate((prevDate) => prevDate?.subtract(1, "day") ?? null)
-            }
-          >
-            <ChevronLeft />
-          </IconButton>
-          <IconButton
-            aria-label="nächster Tag"
-            className="aspect-square"
-            onClick={() =>
-              setDate((prevDate) => prevDate?.add(1, "day") ?? null)
-            }
-          >
-            <ChevronRight />
-          </IconButton>
-          <Button
-            variant="outlined"
-            color="inherit"
-            onClick={() => setDate(dayjs())}
-          >
-            Heute
-          </Button>
-        </div>
-      </div>
+      <MobileDatePicker
+        open={datePickerOpen}
+        onOpen={() => setDatePickerOpen(true)}
+        onClose={() => setDatePickerOpen(false)}
+        label="Datum"
+        value={date}
+        onChange={setDate}
+        sx={{
+          display: "none",
+        }}
+      />
+      <BottomAppBar
+        onPrevClick={() =>
+          setDate((prevDate) => prevDate?.subtract(1, "day") ?? null)
+        }
+        onNextClick={() =>
+          setDate((prevDate) => prevDate?.add(1, "day") ?? null)
+        }
+        onTodayClick={() => setDate(dayjs())}
+        onCalendarClick={() => setDatePickerOpen(true)}
+      />
       <div className="grid grid-rows-[auto_1fr] overflow-y-auto">
         {/* WEEKDAY + DATE */}
         <div className="p-2 shadow">
@@ -73,7 +59,7 @@ export const Overview = () => {
             {Array.from({ length: ROWS / 2 }).map((_, index) => (
               <div className="-mt-3.5 p-1" key={index}>
                 <div className="text-sm">
-                  {start.add(index * 30, "minute").format("HH:mm")}
+                  {START_TIME.add(index * 30, "minute").format("HH:mm")}
                 </div>
               </div>
             ))}
