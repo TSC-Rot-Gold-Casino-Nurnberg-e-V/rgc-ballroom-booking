@@ -2,6 +2,7 @@ import { useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import { BottomAppBar } from "./BottomAppBar.tsx";
+import { useSwipe } from "./useSwipe.ts";
 
 export const Overview = () => {
   const DISPLAYED_HOURS = 14;
@@ -14,8 +15,26 @@ export const Overview = () => {
   const [date, setDate] = useState<Dayjs | null>(dayjs());
   const [datePickerOpen, setDatePickerOpen] = useState(false);
 
+  function incrementDate() {
+    setDate((prevDate) => prevDate?.add(1, "day") ?? null);
+  }
+
+  function decrementDate() {
+    setDate((prevDate) => prevDate?.subtract(1, "day") ?? null);
+  }
+
+  const { onTouchStart, onTouchMove, onTouchEnd } = useSwipe({
+    onSwipedLeft: incrementDate,
+    onSwipedRight: decrementDate,
+  });
+
   return (
-    <div className="grid h-dvh grid-rows-[auto_1fr]">
+    <div
+      className="grid h-dvh grid-rows-[auto_1fr]"
+      onTouchStart={(event) => onTouchStart(event.targetTouches[0].clientX)}
+      onTouchMove={(event) => onTouchMove(event.targetTouches[0].clientX)}
+      onTouchEnd={onTouchEnd}
+    >
       <MobileDatePicker
         open={datePickerOpen}
         onOpen={() => setDatePickerOpen(true)}
@@ -28,12 +47,8 @@ export const Overview = () => {
         }}
       />
       <BottomAppBar
-        onPrevClick={() =>
-          setDate((prevDate) => prevDate?.subtract(1, "day") ?? null)
-        }
-        onNextClick={() =>
-          setDate((prevDate) => prevDate?.add(1, "day") ?? null)
-        }
+        onPrevClick={decrementDate}
+        onNextClick={incrementDate}
         onTodayClick={() => setDate(dayjs())}
         onCalendarClick={() => setDatePickerOpen(true)}
       />
