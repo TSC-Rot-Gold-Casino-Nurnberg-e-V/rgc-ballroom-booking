@@ -30,7 +30,7 @@ export const BottomAppBar = ({
           <ChevronLeft />
         </IconButton>
         <button
-          className="h-10 rounded-full bg-stone-200 px-6 transition-colors hover:bg-stone-300 active:bg-stone-300"
+          className="h-10 rounded-full bg-stone-200 px-6 transition-colors hover:bg-stone-300 active:bg-stone-400"
           onClick={onTodayClick}
         >
           Heute
@@ -51,7 +51,7 @@ export const BottomAppBar = ({
 
 const IconButton = ({ children, ...buttonProps }: ComponentProps<"button">) => (
   <button {...buttonProps} className="group h-12 w-12 rounded-full">
-    <div className="m-1 flex h-10 w-10 items-center justify-center rounded-full bg-stone-200 transition-colors group-hover:bg-stone-300 group-active:bg-stone-300">
+    <div className="m-1 flex h-10 w-10 items-center justify-center rounded-full bg-stone-200 transition-colors group-hover:bg-stone-300 group-active:bg-stone-400">
       {children}
     </div>
   </button>
