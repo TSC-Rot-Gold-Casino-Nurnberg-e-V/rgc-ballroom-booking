@@ -1,11 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AppRouter } from "./AppRouter.tsx";
 import { CssBaseline } from "@mui/material";
-import { Overview } from "./Overview.tsx";
-
-import { LocalizationProvider, deDE } from "@mui/x-date-pickers";
+import { deDE, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/de";
 
@@ -18,17 +16,6 @@ import dayjs from "dayjs";
 
 dayjs.locale("de");
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Overview />,
-  },
-  {
-    path: "display",
-    element: <div>Display</div>,
-  },
-]);
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <CssBaseline />
@@ -39,7 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         deDE.components.MuiLocalizationProvider.defaultProps.localeText
       }
     >
-      <RouterProvider router={router} />
+      <AppRouter />
     </LocalizationProvider>
   </React.StrictMode>,
 );
