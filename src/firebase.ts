@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import {
+  getFirestore,
+  addDoc,
+  collection,
+  Timestamp,
+} from "firebase/firestore";
+import { RgcEvent } from "./RgcEvent.ts";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -14,3 +20,16 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+
+export async function addEvent(event: RgcEvent) {
+  const documentReference = await addDoc(collection(db, "events"), {
+    name: event.name,
+    start: new Timestamp(
+      parseInt((event.start.getTime() / 1000).toFixed(0)),
+      0,
+    ),
+    end: new Timestamp(parseInt((event.end.getTime() / 1000).toFixed(0)), 0),
+    ballroom: event.ballroom,
+  });
+  console.log("documentReference: ", documentReference);
+}
