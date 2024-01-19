@@ -6,6 +6,7 @@ import { useSwipe } from "./useSwipe.ts";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "./firebase.ts";
 import { RgcEvent } from "./RgcEvent.ts";
+import { useUser } from "./UserContext.tsx";
 
 export const Overview = () => {
   const DISPLAYED_HOURS = 14;
@@ -18,6 +19,8 @@ export const Overview = () => {
   const [date, setDate] = useState<Dayjs | null>(dayjs());
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [events, setEvents] = useState<Array<RgcEvent>>([]);
+
+  const { user, role } = useUser();
 
   function incrementDate() {
     setDate((prevDate) => prevDate?.add(1, "day") ?? null);
@@ -63,6 +66,8 @@ export const Overview = () => {
       onTouchMove={(event) => onTouchMove(event.targetTouches[0].clientX)}
       onTouchEnd={onTouchEnd}
     >
+      <div>user: {user?.email}</div>
+      <div>rolle: {role}</div>
       <MobileDatePicker
         open={datePickerOpen}
         onOpen={() => setDatePickerOpen(true)}

@@ -13,6 +13,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import dayjs from "dayjs";
+import { UserContextProvider } from "./UserContext.tsx";
 
 dayjs.locale("de");
 
@@ -26,7 +27,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         deDE.components.MuiLocalizationProvider.defaultProps.localeText
       }
     >
-      <AppRouter />
+      <UserContextProvider>
+        <AppRouter />
+      </UserContextProvider>
     </LocalizationProvider>
   </React.StrictMode>,
 );

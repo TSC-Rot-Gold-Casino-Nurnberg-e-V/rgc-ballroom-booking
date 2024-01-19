@@ -1,11 +1,19 @@
 import { initializeApp } from "firebase/app";
 import {
-  getFirestore,
   addDoc,
   collection,
+  doc,
+  getDoc,
+  getFirestore,
+  setDoc,
   Timestamp,
 } from "firebase/firestore";
 import { RgcEvent } from "./RgcEvent.ts";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -20,6 +28,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+export const auth = getAuth(app);
 
 export async function addEvent(event: RgcEvent) {
   const documentReference = await addDoc(collection(db, "events"), {
@@ -32,4 +41,29 @@ export async function addEvent(event: RgcEvent) {
     ballroom: event.ballroom,
   });
   console.log("documentReference: ", documentReference);
+}
+
+export async function register(email: string, password: string) {
+  console.log("register()");
+  const userCredential = await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password,
+  );
+  console.log("created user successfully");
+  await setDoc(doc(db, "users", userCredential.user.uid), {
+    role: "trainer",
+    email: userCredential.user.email,
+  });
+  console.log("init user data successfully");
+}
+
+export async function login(email: string, password: string) {
+  console.log("login()");
+  await signInWithEmailAndPassword(auth, email, password);
+}
+
+export async function getRole(uid: string) {
+  const documentSnapshot = await getDoc(doc(db, "users", uid));
+  return documentSnapshot.get("role");
 }

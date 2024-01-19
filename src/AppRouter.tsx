@@ -9,6 +9,8 @@ import {
 
 import { Overview } from "./Overview.tsx";
 import { Admin } from "./Admin.tsx";
+import { Register } from "./Register.tsx";
+import { Login } from "./Login.tsx";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -39,6 +41,16 @@ const router = new Router({
       getParentRoute: () => rootRoute,
       path: "/admin",
       component: Admin,
+    }),
+    new Route({
+      getParentRoute: () => rootRoute,
+      path: "/login",
+      component: Login,
+    }),
+    new Route({
+      getParentRoute: () => rootRoute,
+      path: "/register",
+      component: Register,
     }),
   ]),
 });
