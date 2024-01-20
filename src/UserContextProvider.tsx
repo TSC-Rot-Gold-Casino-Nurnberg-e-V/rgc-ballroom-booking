@@ -1,24 +1,12 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth, getRole } from "./firebase.ts";
-
-const userContext = createContext<{
-  user: User | null;
-  role: string;
-}>({
-  user: null,
-  role: "",
-});
+import { Role } from "./Role.ts";
+import { userContext } from "./userContext.ts";
 
 export const UserContextProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null);
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState<Role | null>(null);
 
   useEffect(() => {
     onAuthStateChanged(auth, setUser);
@@ -37,5 +25,3 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
     </userContext.Provider>
   );
 };
-
-export const useUser = () => useContext(userContext);

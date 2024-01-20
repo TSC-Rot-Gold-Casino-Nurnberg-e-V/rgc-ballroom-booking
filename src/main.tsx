@@ -13,7 +13,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import dayjs from "dayjs";
-import { UserContextProvider } from "./UserContext.tsx";
+import { UserContextProvider } from "./UserContextProvider.tsx";
 
 dayjs.locale("de");
 
