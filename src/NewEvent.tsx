@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { addEvent } from "./firebase.ts";
 
-export const Admin = () => {
+export const NewEvent = () => {
   const [name, setName] = useState("");
   const [start, setStart] = useState<dayjs.Dayjs | null>(null);
   const [end, setEnd] = useState<dayjs.Dayjs | null>(null);

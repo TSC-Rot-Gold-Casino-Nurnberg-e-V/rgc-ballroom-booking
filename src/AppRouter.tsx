@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-router";
 
 import { Overview } from "./Overview.tsx";
-import { Admin } from "./Admin.tsx";
+import { NewEvent } from "./NewEvent.tsx";
 import { Register } from "./Register.tsx";
 import { Login } from "./Login.tsx";
 
@@ -39,8 +39,8 @@ const router = new Router({
     }),
     new Route({
       getParentRoute: () => rootRoute,
-      path: "/admin",
-      component: Admin,
+      path: "/events/new",
+      component: NewEvent,
     }),
     new Route({
       getParentRoute: () => rootRoute,
