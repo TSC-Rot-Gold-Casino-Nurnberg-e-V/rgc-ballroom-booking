@@ -5,7 +5,7 @@ import { BottomAppBar } from "./BottomAppBar.tsx";
 import { useSwipe } from "./useSwipe.ts";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "./firebase.ts";
-import { RgcEvent } from "./RgcEvent.ts";
+import { RgcEvent } from "./model/RgcEvent.ts";
 
 export const Overview = () => {
   const DISPLAYED_HOURS = 14;

@@ -8,7 +8,7 @@ import {
   setDoc,
   Timestamp,
 } from "firebase/firestore";
-import { RgcEvent } from "./RgcEvent.ts";
+import { RgcEvent } from "./model/RgcEvent.ts";
 import {
   createUserWithEmailAndPassword,
   getAuth,

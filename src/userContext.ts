@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { User } from "firebase/auth";
-import { Role } from "./Role.ts";
+import { Role } from "./model/Role.ts";
 
 export const userContext = createContext<{
   user: User | null;

@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth, getRole } from "./firebase.ts";
-import { Role } from "./Role.ts";
+import { Role } from "./model/Role.ts";
 import { userContext } from "./userContext.ts";
 
 export const UserContextProvider = ({ children }: PropsWithChildren) => {
