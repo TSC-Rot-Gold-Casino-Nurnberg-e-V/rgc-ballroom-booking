@@ -1,7 +1,7 @@
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { FormEvent, useState } from "react";
 import dayjs from "dayjs";
-import { Button } from "@mui/material-next";
+import { Button } from "@mui/material";
 import {
   FormControl,
   InputLabel,
@@ -79,7 +79,7 @@ export const NewEvent = () => {
             <MenuItem value={3}>3</MenuItem>
           </Select>
         </FormControl>
-        <Button type="submit" variant="filledTonal">
+        <Button type="submit" variant="outlined">
           Erstellen
         </Button>
       </form>
