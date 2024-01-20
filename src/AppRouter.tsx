@@ -11,6 +11,7 @@ import { Overview } from "./Overview.tsx";
 import { NewEvent } from "./NewEvent.tsx";
 import { Register } from "./Register.tsx";
 import { Login } from "./Login.tsx";
+import { Events } from "./Events.tsx";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -36,6 +37,11 @@ const router = new Router({
       getParentRoute: () => rootRoute,
       path: "/",
       component: Overview,
+    }),
+    new Route({
+      getParentRoute: () => rootRoute,
+      path: "/events",
+      component: Events,
     }),
     new Route({
       getParentRoute: () => rootRoute,
