@@ -53,6 +53,7 @@ export const Overview = () => {
           start: documentData.start.toDate(),
           end: documentData.end.toDate(),
           ballroom: documentData.ballroom,
+          approved: documentData.approved,
         } satisfies RgcEvent;
       });
       setEvents(events);

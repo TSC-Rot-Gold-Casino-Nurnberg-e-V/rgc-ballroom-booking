@@ -39,6 +39,7 @@ export async function addEvent(event: RgcEvent) {
     ),
     end: new Timestamp(parseInt((event.end.getTime() / 1000).toFixed(0)), 0),
     ballroom: event.ballroom,
+    approved: event.approved,
   });
   console.log("documentReference: ", documentReference);
 }

@@ -35,6 +35,7 @@ export const Admin = () => {
       start: start.toDate(),
       end: end.toDate(),
       ballroom,
+      approved: false,
     });
 
     console.log("added event successfully");
