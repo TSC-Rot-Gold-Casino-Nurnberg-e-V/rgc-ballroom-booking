@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import { BottomAppBar } from "./BottomAppBar.tsx";
 import { useSwipe } from "./useSwipe.ts";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "./firebase.ts";
 import { RgcEvent } from "./model/RgcEvent.ts";
+import { useEventsOfDay } from "./useEventsOfDay.ts";
 
 export const Overview = () => {
   const DISPLAYED_HOURS = 14;
@@ -17,7 +16,8 @@ export const Overview = () => {
 
   const [date, setDate] = useState<Dayjs | null>(dayjs());
   const [datePickerOpen, setDatePickerOpen] = useState(false);
-  const [events, setEvents] = useState<Array<RgcEvent>>([]);
+
+  const events = useEventsOfDay(date);
 
   function incrementDate() {
     setDate((prevDate) => prevDate?.add(1, "day") ?? null);
@@ -31,31 +31,6 @@ export const Overview = () => {
     onSwipedLeft: incrementDate,
     onSwipedRight: decrementDate,
   });
-
-  useEffect(() => {
-    if (date === null) {
-      return;
-    }
-    getDocs(
-      query(
-        collection(db, "events"),
-        where("start", ">", date.startOf("day").toDate()),
-        where("start", "<", date.endOf("day").toDate()),
-      ),
-    ).then((querySnapshot) => {
-      const events = querySnapshot.docs.map((doc) => {
-        const documentData = doc.data();
-        return {
-          name: documentData.name,
-          start: documentData.start.toDate(),
-          end: documentData.end.toDate(),
-          ballroom: documentData.ballroom,
-          approved: documentData.approved,
-        } satisfies RgcEvent;
-      });
-      setEvents(events);
-    });
-  }, [date]);
 
   return (
     <div
