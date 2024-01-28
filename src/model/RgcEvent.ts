@@ -13,3 +13,5 @@ export const rgcEventSchema = z.object({
 export type RgcEvent = z.infer<typeof rgcEventSchema>;
 
 export type RgcEventFirestore = z.input<typeof rgcEventSchema>;
+
+export type NewRgcEvent = Omit<RgcEvent, "series" | "approved">;

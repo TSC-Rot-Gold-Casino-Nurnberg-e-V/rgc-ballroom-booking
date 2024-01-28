@@ -1,19 +1,23 @@
 import { initializeApp } from "firebase/app";
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
   getDoc,
   getFirestore,
   setDoc,
   Timestamp,
+  writeBatch,
 } from "firebase/firestore";
-import { RgcEvent } from "./model/RgcEvent.ts";
+import { NewRgcEvent, RgcEventFirestore } from "./model/RgcEvent.ts";
 import {
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { Repetition } from "./model/Repetition.ts";
+import dayjs, { ManipulateType } from "dayjs";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -30,18 +34,52 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
-export async function addEvent(event: RgcEvent) {
-  const documentReference = await addDoc(collection(db, "events"), {
-    name: event.name,
-    start: new Timestamp(
-      parseInt((event.start.getTime() / 1000).toFixed(0)),
-      0,
-    ),
-    end: new Timestamp(parseInt((event.end.getTime() / 1000).toFixed(0)), 0),
-    ballroom: event.ballroom,
-    approved: event.approved,
-  });
-  console.log("documentReference: ", documentReference);
+export async function addEvent(newEvent: NewRgcEvent) {
+  return addDoc(collection(db, "events"), {
+    name: newEvent.name,
+    start: toTimestamp(newEvent.start),
+    end: toTimestamp(newEvent.end),
+    ballroom: newEvent.ballroom,
+    approved: false,
+    series: null,
+  } satisfies RgcEventFirestore);
+}
+
+export async function addSeries(
+  newEvent: NewRgcEvent,
+  { repetition, endsAfter }: { repetition: Repetition; endsAfter: number },
+) {
+  try {
+    const eventsCollectionRef = collection(db, "events");
+    const seriesDocRef = await addDoc(collection(db, "series"), {
+      events: [],
+    });
+
+    const batch = writeBatch(db);
+
+    for (let i = 0; i < endsAfter; i++) {
+      const newEventDocRef = doc(eventsCollectionRef);
+      const valueToAdd = repetition === "every-two-weeks" ? i * 2 : i;
+      batch.set(newEventDocRef, {
+        ...newEvent,
+        start: toTimestamp(
+          dayjs(newEvent.start).add(valueToAdd, toUnit(repetition)).toDate(),
+        ),
+        end: toTimestamp(
+          dayjs(newEvent.end).add(valueToAdd, toUnit(repetition)).toDate(),
+        ),
+        approved: false,
+        series: seriesDocRef.id,
+      } satisfies RgcEventFirestore);
+      batch.update(seriesDocRef, {
+        events: arrayUnion(newEventDocRef.id),
+      });
+    }
+
+    await batch.commit();
+  } catch (e: unknown) {
+    console.error(e);
+  }
 }
 
 export async function register(email: string, password: string) {
@@ -67,4 +105,25 @@ export async function login(email: string, password: string) {
 export async function getRole(uid: string) {
   const documentSnapshot = await getDoc(doc(db, "users", uid));
   return documentSnapshot.get("role");
+}
+
+function toTimestamp(date: Date): Timestamp {
+  return new Timestamp(parseInt((date.getTime() / 1000).toFixed(0)), 0);
+}
+
+function toUnit(repetition: Repetition): ManipulateType {
+  switch (repetition) {
+    case "one-off":
+      return "days";
+    case "daily":
+      return "days";
+    case "weekly":
+      return "weeks";
+    case "every-two-weeks":
+      return "weeks";
+    case "monthly":
+      return "months";
+    case "yearly":
+      return "years";
+  }
 }
