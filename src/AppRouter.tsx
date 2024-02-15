@@ -21,6 +21,7 @@ const TanStackRouterDevtools =
           default: res.TanStackRouterDevtools,
         })),
       );
+import { TanStackRouterDevtools } from "./TanstackRouterDevtools.tsx";
 
 const rootRoute = new RootRoute({
   component: () => (
@@ -66,5 +67,3 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
 }
-
-export const AppRouter = () => <RouterProvider router={router} />;

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { AppRouter } from "./AppRouter.tsx";
+import { router } from "./AppRouter.tsx";
 import { CssBaseline } from "@mui/material";
 import { deDE, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -14,6 +14,7 @@ import "@fontsource/roboto/700.css";
 
 import dayjs from "dayjs";
 import { UserContextProvider } from "./UserContextProvider.tsx";
+import { RouterProvider } from "@tanstack/react-router";
 
 dayjs.locale("de");
 
@@ -28,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       }
     >
       <UserContextProvider>
-        <AppRouter />
+        <RouterProvider router={router} />
       </UserContextProvider>
     </LocalizationProvider>
   </React.StrictMode>,
