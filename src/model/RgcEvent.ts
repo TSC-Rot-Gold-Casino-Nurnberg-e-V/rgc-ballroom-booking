@@ -2,6 +2,7 @@ import { z } from "zod";
 import { Timestamp } from "firebase/firestore";
 
 export const rgcEventSchema = z.object({
+  id: z.string(),
   name: z.string(),
   start: z.custom<Timestamp>().transform((start) => start.toDate()),
   end: z.custom<Timestamp>().transform((start) => start.toDate()),
@@ -14,4 +15,4 @@ export type RgcEvent = z.infer<typeof rgcEventSchema>;
 
 export type RgcEventFirestore = z.input<typeof rgcEventSchema>;
 
-export type NewRgcEvent = Omit<RgcEvent, "series" | "approved">;
+export type NewRgcEvent = Omit<RgcEvent, "id" | "approved" | "series">;

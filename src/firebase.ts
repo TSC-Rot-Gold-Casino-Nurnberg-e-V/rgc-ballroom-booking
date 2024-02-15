@@ -10,7 +10,11 @@ import {
   Timestamp,
   writeBatch,
 } from "firebase/firestore";
-import { NewRgcEvent, RgcEventFirestore } from "./model/RgcEvent.ts";
+import {
+  NewRgcEvent,
+  RgcEventFirestore,
+  rgcEventSchema,
+} from "./model/RgcEvent.ts";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -42,7 +46,7 @@ export async function addEvent(newEvent: NewRgcEvent) {
     ballroom: newEvent.ballroom,
     approved: false,
     series: null,
-  } satisfies RgcEventFirestore);
+  } satisfies Omit<RgcEventFirestore, "id">);
 }
 
 export async function addSeries(
@@ -70,7 +74,7 @@ export async function addSeries(
         ),
         approved: false,
         series: seriesDocRef.id,
-      } satisfies RgcEventFirestore);
+      } satisfies Omit<RgcEventFirestore, "id">);
       batch.update(seriesDocRef, {
         events: arrayUnion(newEventDocRef.id),
       });
