@@ -38,6 +38,15 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
+export async function getEvent(id: string) {
+  const docRef = doc(db, "events", id);
+  const documentSnapshot = await getDoc(docRef);
+  return rgcEventSchema.parse({
+    id: id,
+    ...documentSnapshot.data(),
+  });
+}
+
 export async function addEvent(newEvent: NewRgcEvent) {
   return addDoc(collection(db, "events"), {
     name: newEvent.name,
