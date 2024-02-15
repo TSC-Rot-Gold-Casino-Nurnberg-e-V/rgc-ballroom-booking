@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth, getRole } from "./firebase.ts";
 import { Role } from "./model/Role.ts";
@@ -19,9 +19,9 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
     getRole(user?.uid).then(setRole);
   }, [user]);
 
-  return (
-    <userContext.Provider value={{ user, role }}>
-      {children}
-    </userContext.Provider>
-  );
+  const value = useMemo(() => {
+    return { user, role };
+  }, [role, user]);
+
+  return <userContext.Provider value={value}>{children}</userContext.Provider>;
 };
