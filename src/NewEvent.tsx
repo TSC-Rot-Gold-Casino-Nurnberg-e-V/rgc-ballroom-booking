@@ -1,8 +1,9 @@
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { FormEvent, useState } from "react";
 import dayjs from "dayjs";
-import { Button, SelectChangeEvent } from "@mui/material";
 import {
+  Button,
+  SelectChangeEvent,
   FormControl,
   InputLabel,
   MenuItem,
@@ -10,7 +11,11 @@ import {
   TextField,
 } from "@mui/material";
 import { addEvent, addSeries } from "./firebase.ts";
-import { Repetition } from "./model/Repetition.ts";
+import {
+  Repetition,
+  repetitionEnumSchema,
+  toEndsAfter,
+} from "./model/Repetition.ts";
 
 export const NewEvent = () => {
   const [name, setName] = useState("");
@@ -61,21 +66,9 @@ export const NewEvent = () => {
   }
 
   function handleRepetitionChange(event: SelectChangeEvent<Repetition>) {
-    const updatedRepetition = event.target.value as Repetition;
+    const updatedRepetition = repetitionEnumSchema.parse(event.target.value);
     setRepetition(updatedRepetition);
-    setEndsAfter(
-      updatedRepetition === "one-off"
-        ? null
-        : updatedRepetition === "daily"
-          ? 365
-          : updatedRepetition === "weekly"
-            ? 52
-            : updatedRepetition === "every-two-weeks"
-              ? 26
-              : updatedRepetition === "monthly"
-                ? 12
-                : 1,
-    );
+    setEndsAfter(toEndsAfter(updatedRepetition));
   }
 
   return (
