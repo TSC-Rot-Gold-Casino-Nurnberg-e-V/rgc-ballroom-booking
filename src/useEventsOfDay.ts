@@ -19,10 +19,12 @@ export function useEventsOfDay(date: Dayjs | null): Array<RgcEvent> {
       where("start", "<", date.endOf("day").toDate()),
     );
     const unsubscribe = onSnapshot(todayEventsQuery, (querySnapshot) => {
-      const events = querySnapshot.docs.map((doc) => {
-        const documentData = doc.data();
-        return rgcEventSchema.parse(documentData);
-      });
+      const events = querySnapshot.docs.map((doc) =>
+        rgcEventSchema.parse({
+          id: doc.id,
+          ...doc.data(),
+        }),
+      );
       setEvents(events);
     });
 
