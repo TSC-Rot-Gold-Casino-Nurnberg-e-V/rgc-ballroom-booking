@@ -15,6 +15,7 @@ import "@fontsource/roboto/700.css";
 import dayjs from "dayjs";
 import { UserContextProvider } from "./UserContextProvider.tsx";
 import { RouterProvider } from "@tanstack/react-router";
+import { SnackbarContextProvider } from "./SnackbarContextProvider.tsx";
 
 dayjs.locale("de");
 
@@ -28,9 +29,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         deDE.components.MuiLocalizationProvider.defaultProps.localeText
       }
     >
-      <UserContextProvider>
-        <RouterProvider router={router} />
-      </UserContextProvider>
+      <SnackbarContextProvider>
+        <UserContextProvider>
+          <RouterProvider router={router} />
+        </UserContextProvider>
+      </SnackbarContextProvider>
     </LocalizationProvider>
   </React.StrictMode>,
 );
