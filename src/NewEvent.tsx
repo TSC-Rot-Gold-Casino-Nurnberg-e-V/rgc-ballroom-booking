@@ -16,6 +16,7 @@ import {
   repetitionEnumSchema,
   toEndsAfter,
 } from "./model/Repetition.ts";
+import { useSnackbar } from "./snackbarContext.ts";
 
 export const NewEvent = () => {
   const [name, setName] = useState("");
@@ -24,6 +25,8 @@ export const NewEvent = () => {
   const [ballroom, setBallroom] = useState<1 | 2 | 3>(1);
   const [repetition, setRepetition] = useState<Repetition>("one-off");
   const [endsAfter, setEndsAfter] = useState<number | null>(null);
+
+  const { showSnackbar } = useSnackbar();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -45,6 +48,7 @@ export const NewEvent = () => {
         end: end.toDate(),
         ballroom,
       });
+      showSnackbar("Event wurde erfolgreich erstellt");
     } else {
       if (endsAfter === null) {
         return;
@@ -62,6 +66,7 @@ export const NewEvent = () => {
           endsAfter,
         },
       );
+      showSnackbar("Eventserie wurde erfolgreich erstellt");
     }
   }
 
